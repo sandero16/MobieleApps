@@ -21,6 +21,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private GoogleSignInClient mGoogleSignInClient;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +51,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        goToNextScreen(account);
+
+        //checks if logout is neccesary
+
+        Intent intent = getIntent();
+        int test = intent.getIntExtra("logout", 0);
+
+        if(test == 1){
+            //logout
+            logout();
+
+        }else {
+
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            goToNextScreen(account);
+        }
     }
 
     @Override
@@ -101,4 +116,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+
+
+    public void logout() {
+
+        mGoogleSignInClient.signOut();
+    }
+
+
 }
