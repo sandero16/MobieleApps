@@ -4,9 +4,17 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private ListView lv;
+    List<String> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +23,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button logoutButton = findViewById(R.id.logout_button);
         findViewById(R.id.logout_button).setOnClickListener(this);
+
+        lv = (ListView) findViewById(R.id.listview);
+
+        list = new ArrayList<String>();
+        // add stuff to list
+        list.add("foo");
+        list.add("bar");
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_list_item_1, list );
+
+        lv.setAdapter(arrayAdapter);
 
     }
 
