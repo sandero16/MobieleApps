@@ -36,6 +36,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         lv.setAdapter(arrayAdapter);
 
+        // voor sockets te testen
+
+        Intent serviceIntent = new Intent(this,SendMessageService.class);
+        startService(serviceIntent);
+
+
     }
 
     @Override
