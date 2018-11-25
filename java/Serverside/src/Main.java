@@ -6,15 +6,22 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Main {
+	
+	
 
 	public static void main(String[] args) {
 		// https://www.codejava.net/java-se/networking/java-socket-server-examples-tcp-ip
-		// voorbeelden
+		
+		ArrayList <User> users = new ArrayList<>();
+		ArrayList <Conversation> conversations = new ArrayList<>();
+		
+		//add stuff to fill them
 		
 		try {
-			
+			users.get(0);
 			
 			ServerSocket serverSocket = new ServerSocket(6000);
 			
