@@ -10,11 +10,15 @@ public class SimpleMessage {
 	 */
 	
 	String message;
+	String conversation;
+	String extra;
 	
-	public SimpleMessage(int type, String message) {
+	public SimpleMessage(int type, String conversation, String message, String extra) {
 		
 		this.type=type;
+		this.conversation = conversation;
 		this.message = message;
+		this.extra =extra;
 		
 	}
 	
@@ -22,7 +26,9 @@ public class SimpleMessage {
 	public SimpleMessage(JSONObject jo) {
 		
 		type = (Integer) jo.get("type");
+		conversation = (String) jo.get("conversation");
 		message = (String) jo.get("message");
+		extra = (String) jo.get("extra");
 		
 	}
 
@@ -42,15 +48,26 @@ public class SimpleMessage {
 		this.message = message;
 	}
 	
+	public String getConversation() {
+		return conversation;
+	}
+	
 	//convert to JSON
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
 
 	      obj.put("type", new Integer(type));
+	      obj.put("conversation", conversation);
 	      obj.put("message", message);
+	      obj.put("extra", extra);
 	      
 	      return obj;
 		
+	}
+
+	public String getExtra() {
+		// TODO Auto-generated method stub
+		return extra;
 	}
 	
 	

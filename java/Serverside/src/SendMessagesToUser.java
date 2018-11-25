@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class SendMessagesToUser implements Runnable{
@@ -24,13 +27,34 @@ public class SendMessagesToUser implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		
+		try {
+			OutputStream output = socket.getOutputStream();
+			PrintWriter writer = new PrintWriter(output, true);
+		
 		
 		while (run) {
 			//send messages
 			
+			SimpleMessage sm;
+			try {
+				sm = user.getMessageToSend();
 			
+			
+			writer.println(sm.toJSON().toJSONString());
+			
+			user.messageIsSend();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 

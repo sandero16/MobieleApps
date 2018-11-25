@@ -8,15 +8,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class Main {
 	
-	
+	static ArrayList <User> users = new ArrayList<>();
 
 	public static void main(String[] args) {
 		// https://www.codejava.net/java-se/networking/java-socket-server-examples-tcp-ip
 		
-		ArrayList <User> users = new ArrayList<>();
-		ArrayList <Conversation> conversations = new ArrayList<>();
+		
 		
 		//add stuff to fill them
 		
@@ -32,17 +35,42 @@ public class Main {
 
 			
 			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-			System.out.println(reader.readLine());
+			//convert to JSON
+			String jsonObject = "";
+			while(reader.ready()) {
+				
+				jsonObject = jsonObject+reader.readLine();
+			}
 			
-			// send data
-			OutputStream output = socket.getOutputStream();
-			
-			PrintWriter writer = new PrintWriter(output, true);
-			writer.println("This is a message sent to the server");
-			System.out.println("Message send.");
-			
-			serverSocket.close();
-			
+			JSONParser parser = new JSONParser();
+			try {
+				JSONObject json = (JSONObject) parser.parse(jsonObject);
+				
+				
+				
+				String name= (String)json.get("message");
+				
+				//find user
+				int i=0;
+				boolean found = false;
+				while(!found && i < users.size()) {
+					
+					User u = users.get(i);
+					if (u.getName().equals(name)) {
+						
+						//pass the socket + run in seperate thread
+						u.setSocket(socket);
+						
+						Thread t = new Thread(u);
+						t.start();
+						
+					}
+					
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			
 			
