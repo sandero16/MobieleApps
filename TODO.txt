@@ -7,7 +7,7 @@ TO DO:
 BACKEND:
 
 
-- testen
+- verder testen
 
 // Conversation eruit smijten (onnodige complexiteit --> 1 convers voor 
     alle users)
@@ -18,7 +18,9 @@ APP:
 
 - communiceren met eigen backend
 
-- service
+	- send: move communication outside UI Thread (of Service)
+	- receive: move communication outside UI Thread (of Service) + broadcastreceiver (MainActivity)
+// service
 
 - broadcast receiver
 

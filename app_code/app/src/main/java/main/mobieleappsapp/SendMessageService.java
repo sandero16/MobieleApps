@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
@@ -69,11 +70,22 @@ public class SendMessageService extends Service {
         }
     }
 
+    //TODO put all communication in Asynctasks!
 
     @Override
     public IBinder onBind(Intent intent) {
 
-        String name=intent.getStringExtra("name");
+        //String name=intent.getStringExtra("name");
+        String name = "user3";
+
+
+        AsyncTask.execute(new Runnable(String name) {
+            @Override
+            public void run(String name) {
+                //TODO your background code
+
+            }
+        });
 
 
         //create socket, receiverThread and outputstream + login

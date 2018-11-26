@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     //TODO!
-    public class MessageReceiver extends BroadcastReceiver {
+    /*public class MessageReceiver extends BroadcastReceiver {
 
 
         ArrayList<JSONObject> list;
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         }
-    }
+    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
