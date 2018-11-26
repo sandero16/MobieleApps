@@ -1,0 +1,20 @@
+TO DO:
+------
+
+BACKEND:
+
+- testen
+- Conversation eruit smijten (onnodige complexiteit --> 1 convers voor 
+    alle users)
+
+APP:
+
+- communiceren met eigen backend
+- service
+- broadcast receiver
+- content provider
+- google+ login met token inloggen op backend (nu enkel login app)
+- 3th party backend integreren
+- 2 tools voor app testen evalueren + tests schrijven
+
+- report app.
