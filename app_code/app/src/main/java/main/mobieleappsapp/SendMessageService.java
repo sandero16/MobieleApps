@@ -30,6 +30,7 @@ public class SendMessageService extends Service {
     BufferedReader reader;
     ReceiverThread receiverThread;
 
+
     public class MyBinder extends Binder {
         SendMessageService getService() {
             return SendMessageService.this;
@@ -39,10 +40,13 @@ public class SendMessageService extends Service {
     public class ReceiverThread implements Runnable{
         BufferedReader reader;
         boolean running = true;
-        Context context;
+
+        LocalBroadcastManager localBroadcastManager;
 
         public ReceiverThread(BufferedReader reader){
             this.reader=reader;
+
+
         }
 
 
@@ -70,6 +74,7 @@ public class SendMessageService extends Service {
     public IBinder onBind(Intent intent) {
 
         String name=intent.getStringExtra("name");
+
 
         //create socket, receiverThread and outputstream + login
         try {
