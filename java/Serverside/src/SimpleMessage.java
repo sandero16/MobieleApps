@@ -1,22 +1,24 @@
 import org.json.simple.JSONObject;
+import static java.lang.Math.toIntExact;
 
 public class SimpleMessage {
 
 	int type;
 	/* 0 --> login/logout
 	 * 1 --> add message to conversation
-	 * 2 --> add user to conversation
-	 * 3 --> start new conversation
 	 */
 	
 	String message;
-	String conversation;
+	@Override
+	public String toString() {
+		return "SimpleMessage [type=" + type + ", message=" + message + ", extra=" + extra + "]";
+	}
+
 	String extra;
 	
-	public SimpleMessage(int type, String conversation, String message, String extra) {
+	public SimpleMessage(int type, String message, String extra) {
 		
 		this.type=type;
-		this.conversation = conversation;
 		this.message = message;
 		this.extra =extra;
 		
@@ -25,8 +27,7 @@ public class SimpleMessage {
 	//create from JSON
 	public SimpleMessage(JSONObject jo) {
 		
-		type = (Integer) jo.get("type");
-		conversation = (String) jo.get("conversation");
+		type = toIntExact((Long) jo.get("type"));
 		message = (String) jo.get("message");
 		extra = (String) jo.get("extra");
 		
@@ -48,16 +49,12 @@ public class SimpleMessage {
 		this.message = message;
 	}
 	
-	public String getConversation() {
-		return conversation;
-	}
-	
+
 	//convert to JSON
 	public JSONObject toJSON() {
 		JSONObject obj = new JSONObject();
 
 	      obj.put("type", new Integer(type));
-	      obj.put("conversation", conversation);
 	      obj.put("message", message);
 	      obj.put("extra", extra);
 	      

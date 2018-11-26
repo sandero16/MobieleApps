@@ -21,34 +21,42 @@ public class Main {
 		
 		
 		
-		//add stuff to fill them
+		//add stuff to create users
+		
+		users.add(new User("user1"));
+		users.add(new User("user2"));
+		users.add(new User("user3"));
 		
 		try {
-			users.get(0);
 			
+			System.out.println("socket made");
 			ServerSocket serverSocket = new ServerSocket(6000);
 			
 			// receive data
 			Socket socket = serverSocket.accept();
-			System.out.println("connected");
+			System.out.println("connection accepted");
+			
+			//get first message from user;
 			InputStream input = socket.getInputStream();
 
 			
 			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 			//convert to JSON
 			String jsonObject = "";
-			while(reader.ready()) {
-				
-				jsonObject = jsonObject+reader.readLine();
-			}
 			
+			
+				
+				jsonObject = reader.readLine();
+			
+				System.out.println(jsonObject);
 			JSONParser parser = new JSONParser();
 			try {
 				JSONObject json = (JSONObject) parser.parse(jsonObject);
 				
 				
 				
-				String name= (String)json.get("message");
+				String name= (String)json.get("extra");
+				System.out.println(name+ " tries to log in");
 				
 				//find user
 				int i=0;
@@ -56,6 +64,7 @@ public class Main {
 				while(!found && i < users.size()) {
 					
 					User u = users.get(i);
+					System.out.println(name +"|"+u.getName());
 					if (u.getName().equals(name)) {
 						
 						//pass the socket + run in seperate thread
@@ -65,6 +74,7 @@ public class Main {
 						t.start();
 						
 					}
+					i++;
 					
 				}
 			} catch (ParseException e) {

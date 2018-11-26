@@ -14,7 +14,7 @@ public class SendMessagesToUser implements Runnable{
 	public SendMessagesToUser(Socket s, User u) {
 		
 		this.socket=s;
-		this.user=user;
+		this.user=u;
 	}
 	
 	public void stop() {
@@ -37,12 +37,13 @@ public class SendMessagesToUser implements Runnable{
 			
 			SimpleMessage sm;
 			try {
-				sm = user.getMessageToSend();
+			sm = user.getMessageToSend();
 			
-			
+			System.out.println(user.name + " --- message received");
 			writer.println(sm.toJSON().toJSONString());
 			
 			user.messageIsSend();
+			System.out.println(user.name + " --- message sent to app");
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

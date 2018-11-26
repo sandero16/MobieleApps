@@ -13,12 +13,10 @@ public class User implements Runnable {
 
 	String name;
 
-	ArrayList<Conversation> conversations;
 
 	// contains all messages to be received by the user.
 	ArrayList<SimpleMessage> toReceive;
 
-	boolean online = false;
 
 	private Socket socket = null;
 
@@ -26,49 +24,20 @@ public class User implements Runnable {
 
 		this.name = name;
 
-		conversations = new ArrayList<>();
 
 		toReceive = new ArrayList<>();
 	}
 
-	public void addConversation(Conversation conversation) {
-		// TODO Auto-generated method stub
-		conversations.add(conversation);
 
-	}
 
-	public void addOtherUserToConversation(String conversation, String username) {
+	//send message to other users
+	public void sendMessage(SimpleMessage message) {
 
-		boolean found = false;
-		int i = 0;
-		while (!found || i > conversations.size()) {
-			Conversation c = conversations.get(i);
-
-			if (c.getName().equals(conversation)) {
-				found = true;
-				
-				for(int j = 0; j< Main.users.size(); j++) {
-					User u = Main.users.get(j);
-					
-					if (u.getName().equals(username)) {
-						
-						c.addUser(u);
-						break;
-					}
-					
-					
-				}
-				
-			}
-
-			i++;
+		for (User u : Main.users) {
+			
+			u.addMessageToReceive(message);
+			
 		}
-
-	}
-
-	public void addMessageToSend(Conversation c, SimpleMessage message) {
-
-		c.addMessage(message);
 
 	}
 
@@ -81,7 +50,7 @@ public class User implements Runnable {
 	public synchronized SimpleMessage getMessageToSend() throws InterruptedException {
 		SimpleMessage message = null;
 
-		while (toReceive.size() > 0) wait();
+		while (toReceive.size() < 1) {wait();}
 		
 		message = toReceive.get(0);
 
@@ -98,9 +67,6 @@ public class User implements Runnable {
 		this.socket = s;
 	}
 
-	public boolean isOnline() {
-		return online;
-	}
 
 	public String getName() {
 		return name;
@@ -109,16 +75,15 @@ public class User implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		
+		System.out.println(name + " logged in");
 
 		boolean running = true;
 		try {
 			InputStream input = socket.getInputStream();
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-			synchronized (this) {
-				online = true;
-			}
-			// start thread to send messages to the user
+			//start thread to send messages to the user
 			SendMessagesToUser runnable=new SendMessagesToUser(socket, this);
 			Thread t = new Thread(runnable);
 			t.start();
@@ -131,15 +96,21 @@ public class User implements Runnable {
 				//read incoming message
 				
 				String jsonObject = "";
-				while(reader.ready()) {
-					
-					jsonObject = jsonObject+reader.readLine();
-				}
+				System.out.println(name + " start reading");
 				
+					
+					jsonObject = reader.readLine();
+				
+				
+				System.out.println(name + " object read");
 				try {
 					JSONObject json = (JSONObject) parser.parse(jsonObject);
 					
+					System.out.println(name + "\n" + json);
+					
 					SimpleMessage message= new SimpleMessage(json);
+					
+					System.out.println(name + "\n" + message);
 					
 					int type = message.getType();
 					
@@ -147,34 +118,14 @@ public class User implements Runnable {
 					//stop running
 					case 0: running=false;
 							runnable.stop();
+							socket.close();
+							socket = null;
+							System.out.println(name + "\n" + "STOPPED");
 							break;
-					//add msg to conversation
+					//send msg
 					case 1:
-						String conversation = (String)json.get("conversation");
-						boolean found = false;
-						int i = 0;
-						while (!found || i > conversations.size()) {
-							Conversation c = conversations.get(i);
-
-							if (c.getName().equals(conversation)) {
-								found = true;
-								addMessageToSend(c,message);
-							}
-
-							i++;
-						}
-						break;
-					
-					//add user to conversation
-					case 2:
-						addOtherUserToConversation(message.getConversation(), message.getExtra());
-						break;
-					
-					//start new conversation
-					case 3:
-						
-						new Conversation(message.getConversation(), this);
-						
+						sendMessage(message);
+						System.out.println(name + "\n" + "message send");
 						break;
 						
 					default:
@@ -198,10 +149,6 @@ public class User implements Runnable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-		synchronized (this) {
-			online = false;
 		}
 
 	}
