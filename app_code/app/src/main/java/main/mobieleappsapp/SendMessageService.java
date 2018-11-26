@@ -77,15 +77,7 @@ public class SendMessageService extends Service {
 
         //String name=intent.getStringExtra("name");
         String name = "user3";
-
-
-        AsyncTask.execute(new Runnable(String name) {
-            @Override
-            public void run(String name) {
-                //TODO your background code
-
-            }
-        });
+        
 
 
         //create socket, receiverThread and outputstream + login
