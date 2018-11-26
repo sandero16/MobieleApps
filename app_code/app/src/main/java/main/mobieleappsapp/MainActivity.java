@@ -12,9 +12,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    //TODO!
     public class MessageReceiver extends BroadcastReceiver {
 
         ArrayList<JSONArray> list;
@@ -70,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button logoutButton = findViewById(R.id.logout_button);
         findViewById(R.id.logout_button).setOnClickListener(this);
+
+        Button postButton = findViewById(R.id.post_button);
+        findViewById(R.id.post_button).setOnClickListener(this);
 
         lv = (ListView) findViewById(R.id.listview);
 
@@ -122,7 +130,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.post_button:
+                // get text
+
+                EditText text = (EditText)findViewById(R.id.text_field);
+                String value = text.getText().toString();
+
+                //create message
+
+                JSONObject message=new JSONObject();
+                try {
+                    message.put("type",new Integer(1));
+                    message.put("message", value);
+                    message.put("extra", "");
+
+                //send message
+
+                    mService.sendMessage(message.toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
             case R.id.logout_button:
+
                 logout();
                 break;
             // ...
@@ -131,6 +162,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void logout(){
+        //send logout message to server
+        //create message
+
+        JSONObject message=new JSONObject();
+        try {
+            message.put("type",new Integer(0));
+            message.put("message", "");
+            message.put("extra", "logout");
+
+            //send message
+
+            mService.sendMessage(message.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         //go to the loginscreen
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra("logout",1);

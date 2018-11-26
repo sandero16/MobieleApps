@@ -139,7 +139,7 @@ public class SendMessageService extends Service {
         return false; }
 
 
-    protected void sendMessage(String message) {
+    public void sendMessage(String message) {
 
             //send
             writer.println(message);
