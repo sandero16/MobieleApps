@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //TODO!
     public class MessageReceiver extends BroadcastReceiver {
 
-        ArrayList<JSONArray> list;
+
+        ArrayList<JSONObject> list;
         public MessageReceiver(ArrayList<JSONArray> list){
             super();
 
@@ -61,11 +60,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onReceive(Context context, Intent intent) {
 
             //get the message
+            String data=intent.getStringExtra("message");
 
             //convert it to JSON
+            try {
+                JSONObject obj = new JSONObject(data);
+
+                //add it to the list
+                list.add(obj);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
-            //add it to the list
+
         }
     }
     @Override
@@ -82,9 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lv = (ListView) findViewById(R.id.listview);
 
         list = new ArrayList<String>();
+
         // read data in List
-        list.add("foo");
-        list.add("bar");
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_list_item_1, list );
@@ -93,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         //broadcastreceiver
+
 
 
 
