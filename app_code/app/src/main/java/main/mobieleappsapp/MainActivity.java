@@ -1,12 +1,18 @@
 package main.mobieleappsapp;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SendMessageService mService;
     boolean mBound = false;
     private ArrayAdapter<String> arrayAdapter;
+    private String loc="GPS_DISABLED";
 
     /** Defines callbacks for service binding, passed to bindService() */
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -49,29 +56,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
 
+
     public class MessageReceiver extends BroadcastReceiver {
 
 
         List<String> list;
-        public MessageReceiver(List<String> list){
+
+        public MessageReceiver(List<String> list) {
             super();
 
-            this.list=list;
+            this.list = list;
 
         }
 
         @Override
         public void onReceive(Context context, Intent intent) {
             //get the message
-            String data=intent.getStringExtra("message");
+            String data = intent.getStringExtra("message");
 
             //convert it to JSON
 
-                //JSONObject obj = new JSONObject(data);
+            //JSONObject obj = new JSONObject(data);
 
-                //add it to the list
-                list.add(data);
-                arrayAdapter.notifyDataSetChanged();
+            //add it to the list
+            list.add(data);
+            arrayAdapter.notifyDataSetChanged();
 
 
         }
@@ -96,9 +105,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // read data in List
 
         arrayAdapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, list );
+                this, android.R.layout.simple_list_item_1, list);
 
         lv.setAdapter(arrayAdapter);
+
+        //GPS
+        // Acquire a reference to the system Location Manager
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        // Define a listener that responds to location updates
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+
+                loc=Location.convert(location.getLatitude(), Location.FORMAT_DEGREES) + " " + Location.convert(location.getLongitude(), Location.FORMAT_DEGREES);
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            public void onProviderEnabled(String provider) {
+            }
+
+            public void onProviderDisabled(String provider) {
+            }
+        };
+
+        // Register the listener with the Location Manager to receive location updates
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            finish();
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 0, locationListener);
+
 
 
         //broadcastreceiver
@@ -155,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     message.put("type",new Integer(1));
                     message.put("message", value);
-                    message.put("extra", "");
+                    message.put("extra", loc);
 
                 //send message
 
