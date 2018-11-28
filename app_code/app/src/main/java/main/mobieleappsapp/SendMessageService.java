@@ -115,6 +115,40 @@ public class SendMessageService extends Service {
             return null;
         }
     }
+
+    private  class LogoutTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            writer.close();
+            try {
+                reader.close();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            socket=null;
+            reader=null;
+            writer=null;
+
+
+            return null;
+        }
+    }
+
+    private class SendMessageTask extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected Void doInBackground(String... strings) {
+
+            writer.println(strings[0]);
+
+            return null;
+        }
+    }
+
+
     @Override
     public IBinder onBind(Intent intent) {
 
@@ -123,46 +157,6 @@ public class SendMessageService extends Service {
 
         loginTask = new LoginTask().execute();
 
-        /*
-        //create socket, receiverThread and outputstream + login
-        try {
-            socket = new Socket(hostname, port);
-
-            //init input and outputstream
-            OutputStream output = socket.getOutputStream();
-
-            writer = new PrintWriter(output, true);
-
-            InputStream input = socket.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(input));
-
-            //login
-            try {
-                JSONObject obj = new JSONObject();
-
-                obj.put("type", new Integer(0));
-                obj.put("message", "login");
-                obj.put("extra", name);
-
-                writer.println(obj.toString());
-
-
-
-            //start readerthread
-            receiverThread = new ReceiverThread(reader);
-
-            Thread thread = new Thread(receiverThread);
-            thread.start();
-
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
         return myBinder; }
 
 
@@ -170,19 +164,7 @@ public class SendMessageService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
 
-        writer.close();
-        try {
-            reader.close();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        socket=null;
-        reader=null;
-        writer=null;
-
-
-
+        AsyncTask<Void, Void, Void> logoutTask = new LogoutTask().execute();
 
         return false; }
 
@@ -190,7 +172,7 @@ public class SendMessageService extends Service {
     public void sendMessage(String message) {
 
             //send
-            writer.println(message);
+        AsyncTask<String, Void, Void> sendMessageTask = new SendMessageTask().execute(message);
 
 
     }
