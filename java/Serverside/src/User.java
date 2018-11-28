@@ -136,7 +136,7 @@ public class User implements Runnable {
 					
 					
 					
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
