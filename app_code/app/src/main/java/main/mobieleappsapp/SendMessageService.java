@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class SendMessageService extends Service {
 
@@ -30,6 +31,8 @@ public class SendMessageService extends Service {
     PrintWriter writer;
     BufferedReader reader;
     ReceiverThread receiverThread;
+    private String name;
+    private AsyncTask<Void,Void,Void> loginTask;
 
 
     public class MyBinder extends Binder {
@@ -42,7 +45,6 @@ public class SendMessageService extends Service {
         BufferedReader reader;
         boolean running = true;
 
-        LocalBroadcastManager localBroadcastManager;
 
         public ReceiverThread(BufferedReader reader){
             this.reader=reader;
@@ -72,14 +74,56 @@ public class SendMessageService extends Service {
 
     //TODO put all communication in Asynctasks!
 
+    private class LoginTask extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                socket = new Socket(hostname, port);
+
+                //init input and outputstream
+                OutputStream output = socket.getOutputStream();
+
+                writer = new PrintWriter(output, true);
+
+                InputStream input = socket.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(input));
+
+                //login
+
+                JSONObject obj = new JSONObject();
+
+                obj.put("type", new Integer(0));
+                obj.put("message", "login");
+                obj.put("extra", name);
+
+                writer.println(obj.toString());
+
+
+
+                //start readerthread
+                receiverThread = new ReceiverThread(reader);
+
+                Thread thread = new Thread(receiverThread);
+                thread.start();
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
     @Override
     public IBinder onBind(Intent intent) {
 
         //String name=intent.getStringExtra("name");
-        String name = "user3";
-        
+        name = "user3";
 
+        loginTask = new LoginTask().execute();
 
+        /*
         //create socket, receiverThread and outputstream + login
         try {
             socket = new Socket(hostname, port);
@@ -117,7 +161,7 @@ public class SendMessageService extends Service {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return myBinder; }
 
