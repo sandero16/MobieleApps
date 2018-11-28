@@ -65,7 +65,7 @@ public class SendMessageService extends Service {
                     sendBroadcast(intent);
                 }
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 running = false;
                 e.printStackTrace();
             }

@@ -16,13 +16,18 @@ BACKEND:
 APP:
 
 
-- communiceren met eigen backend
+// communiceren met eigen backend
 
-	- send: move communication outside UI Thread (of Service)
-	- receive: move communication outside UI Thread (of Service) + broadcastreceiver (MainActivity)
+	// send: move communication outside UI Thread (of Service)
+	// receive: move communication outside UI Thread (of Service) + 
+	//broadcastreceiver (MainActivity)
 // service
 
-- broadcast receiver
+// broadcast receiver
+
+- GPS
+
+- locatie tonen op kaart
 
 - content provider
 

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     List<String> list;
     SendMessageService mService;
     boolean mBound = false;
+    private ArrayAdapter<String> arrayAdapter;
 
     /** Defines callbacks for service binding, passed to bindService() */
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -46,37 +48,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
-    //TODO!
-    /*public class MessageReceiver extends BroadcastReceiver {
+
+    public class MessageReceiver extends BroadcastReceiver {
 
 
-        ArrayList<JSONObject> list;
-        public MessageReceiver(ArrayList<JSONArray> list){
+        List<String> list;
+        public MessageReceiver(List<String> list){
             super();
+
+            this.list=list;
 
         }
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
             //get the message
             String data=intent.getStringExtra("message");
 
             //convert it to JSON
-            try {
-                JSONObject obj = new JSONObject(data);
+
+                //JSONObject obj = new JSONObject(data);
 
                 //add it to the list
-                list.add(obj);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
+                list.add(data);
+                arrayAdapter.notifyDataSetChanged();
 
 
         }
-    }*/
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,10 +91,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lv = (ListView) findViewById(R.id.listview);
 
         list = new ArrayList<String>();
+        list.add("test");
 
         // read data in List
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        arrayAdapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_list_item_1, list );
 
         lv.setAdapter(arrayAdapter);
@@ -102,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //broadcastreceiver
 
-
+        BroadcastReceiver br = new MessageReceiver(list);
+        IntentFilter filter = new IntentFilter("SEND_MESSAGE_TO_ACTIVITY");
+        this.registerReceiver(br, filter);
 
 
     }
@@ -144,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 EditText text = (EditText)findViewById(R.id.text_field);
                 String value = text.getText().toString();
+                text.getText().clear();
 
                 //create message
 
