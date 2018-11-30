@@ -27,15 +27,15 @@ APP:
 
 // GPS
 
-- locatie tonen op kaart
+- locatie tonen op kaart (Sander)
 
-- content provider (Room database --> messages erin steken)
+- content provider (Room database --> messages erin steken) (Daan)
 
-- google+ login met token inloggen op backend (nu enkel login app)
+- google+ login met token inloggen op backend (nu enkel login app) (Daan)
 
-- 3th party backend integreren
+- 3th party backend integreren 
 
-- 2 tools voor app testen evalueren + tests schrijven
+- 2 tools voor app testen evalueren + tests schrijven (Sander)
 
 
 VERSLAG:
