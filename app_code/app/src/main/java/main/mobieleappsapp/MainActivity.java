@@ -24,7 +24,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -126,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private class getAllDb extends AsyncTask<Void, Void, Void> {
+    private class GetAllDb extends AsyncTask<Void, Void, Void> {
 
 
         @Override
@@ -134,9 +133,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             List<DatabaseMessage> all = messageDatabase.databaseAccess().getAll();
 
-            //create empty list
-            list = new ArrayList<String>();
-            arrayAdapter.notifyDataSetChanged();
+            //Log.w("---------------","all: " + all.toString());
+
 
             for(DatabaseMessage dm: all){
 
@@ -144,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 arrayAdapter.notifyDataSetChanged();
             }
 
-
+            //Log.w("---------------","list: " + list.toString());
 
             return null;
         }
@@ -166,7 +164,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lv = (ListView) findViewById(R.id.listview);
 
         list = new ArrayList<String>();
-        list.add("test");
+        //list.add("test");
+
 
         // read data in List
 
@@ -221,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         
         //get all items from database
 
-        AsyncTask<Void, Void, Void> execute = new getAllDb().execute();
+        AsyncTask<Void, Void, Void> execute = new GetAllDb().execute();
 
 
         //broadcastreceiver
