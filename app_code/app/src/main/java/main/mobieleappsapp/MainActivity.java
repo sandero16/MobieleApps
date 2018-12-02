@@ -1,6 +1,7 @@
 package main.mobieleappsapp;
 
 import android.Manifest;
+import android.arch.persistence.room.Room;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,10 +12,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean mBound = false;
     private ArrayAdapter<String> arrayAdapter;
     private String loc="GPS_DISABLED";
+    private static final String DATABASE_NAME = "message_db";
+    private MessageDatabase messageDatabase;
+    private MessageReceiver br;
+
 
     /** Defines callbacks for service binding, passed to bindService() */
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -74,17 +81,76 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //get the message
             String data = intent.getStringExtra("message");
 
-            //convert it to JSON
 
-            //JSONObject obj = new JSONObject(data);
 
-            //add it to the list
-            list.add(data);
-            arrayAdapter.notifyDataSetChanged();
 
+            if(data!=null) {
+                //add it to the list
+                list.add(data);
+                arrayAdapter.notifyDataSetChanged();
+
+                //add it to the database
+                new AddMessageToDbTask().execute(data);
+
+
+            }
 
         }
     }
+
+    private class AddMessageToDbTask extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... strings) {
+
+            try {
+                JSONObject obj = new JSONObject(strings[0]);
+                messageDatabase.databaseAccess().insert(new DatabaseMessage(obj));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+    private class DeleteAllDb extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            messageDatabase.databaseAccess().deleteAll();
+            return null;
+        }
+    }
+
+    private class getAllDb extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            List<DatabaseMessage> all = messageDatabase.databaseAccess().getAll();
+
+            //create empty list
+            list = new ArrayList<String>();
+            arrayAdapter.notifyDataSetChanged();
+
+            for(DatabaseMessage dm: all){
+
+                list.add(dm.toJSON().toString());
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+
+
+            return null;
+        }
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,10 +213,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 0, locationListener);
 
 
+        //content provider (room database)
+
+        messageDatabase = Room.databaseBuilder(getApplicationContext(),
+                MessageDatabase.class, DATABASE_NAME)
+                .build();
+        
+        //get all items from database
+
+        AsyncTask<Void, Void, Void> execute = new getAllDb().execute();
+
 
         //broadcastreceiver
 
-        BroadcastReceiver br = new MessageReceiver(list);
+        br = new MessageReceiver(list);
         IntentFilter filter = new IntentFilter("SEND_MESSAGE_TO_ACTIVITY");
         this.registerReceiver(br, filter);
 
@@ -179,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onDestroy() {
 
         super.onDestroy();
-
+        this.unregisterReceiver(br);
 
 
     }
