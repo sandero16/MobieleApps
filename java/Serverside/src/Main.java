@@ -25,7 +25,8 @@ public class Main {
 		
 		users.add(new User("user1"));
 		users.add(new User("user2"));
-		users.add(new User("user3"));
+		users.add(new User("user"));
+		users.add(new User("106949242187358004744"));
 		
 		try {
 			
