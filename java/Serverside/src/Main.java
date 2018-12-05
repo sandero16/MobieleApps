@@ -33,6 +33,7 @@ public class Main {
 			ServerSocket serverSocket = new ServerSocket(6000);
 			
 			// receive data
+			while(true) {
 			Socket socket = serverSocket.accept();
 			System.out.println("connection accepted");
 			
@@ -82,12 +83,13 @@ public class Main {
 				e.printStackTrace();
 			}
 			
-			
+			}
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 
 	}
 

@@ -95,7 +95,7 @@ public class SendMessageService extends Service {
                 JSONObject obj = new JSONObject();
 
                 obj.put("type", new Integer(0));
-                obj.put("message", "login");
+                obj.put("message", MainActivity.token);
                 obj.put("extra", name);
 
                 writer.println(obj.toString());

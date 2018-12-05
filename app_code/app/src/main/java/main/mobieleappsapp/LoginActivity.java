@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     static final int RC_SIGN_IN = 1;
 
     private GoogleSignInClient mGoogleSignInClient;
-
+    private String idToken;
 
 
     @Override
@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
+                .requestIdToken(getString(R.string.client_id))
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
@@ -63,8 +63,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }else {
 
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            goToNextScreen(account);
+            //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            //idToken = account.getIdToken();
+            //goToNextScreen(account);
         }
     }
 
@@ -99,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
+            idToken = account.getIdToken();
             // Signed in successfully, show authenticated UI.
             goToNextScreen(account);
         } catch (ApiException e) {
@@ -114,6 +115,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void goToNextScreen(GoogleSignInAccount account) {
 
         Intent intent = new Intent(this, MainActivity.class);
+        //Log.w("--------------------",idToken.toString());
+        intent.putExtra("token",idToken);
         startActivity(intent);
     }
 
@@ -122,6 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void logout() {
 
         mGoogleSignInClient.signOut();
+
     }
 
 

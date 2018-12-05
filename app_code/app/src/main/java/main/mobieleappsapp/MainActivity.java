@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String DATABASE_NAME = "message_db";
     private MessageDatabase messageDatabase;
     private MessageReceiver br;
+    public static String token;
 
 
     /** Defines callbacks for service binding, passed to bindService() */
@@ -163,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         lv = (ListView) findViewById(R.id.listview);
 
+
         list = new ArrayList<String>();
         //list.add("test");
 
@@ -173,6 +175,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this, android.R.layout.simple_list_item_1, list);
 
         lv.setAdapter(arrayAdapter);
+
+        //read token
+
+        token = getIntent().getStringExtra("token");
 
         //GPS
         // Acquire a reference to the system Location Manager
