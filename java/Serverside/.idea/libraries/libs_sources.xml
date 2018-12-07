@@ -1,0 +1,45 @@
+<component name="libraryTable">
+  <library name="libs-sources">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-api-client-android-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-api-client-xml-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-http-client-appengine-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-api-client-servlet-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/commons-logging-1.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/jsr305-3.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-http-client-xml-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/xpp3-1.1.4c-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-oauth-client-appengine-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/gson-2.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-http-client-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-api-client-protobuf-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-http-client-android-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-oauth-client-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-api-client-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/jetty-util-6.1.26-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-oauth-client-jetty-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/protobuf-java-2.6.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-http-client-jackson-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-http-client-gson-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-http-client-jackson2-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-api-client-java6-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/jackson-core-2.9.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-oauth-client-servlet-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/httpclient-4.5.3-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/guava-20.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/transaction-api-1.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/jdo2-api-2.3-eb-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/jetty-6.1.26-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-api-client-gson-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-oauth-client-java6-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-http-client-jdo-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-api-client-appengine-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-api-client-jackson2-1.24.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/httpcore-4.4.6-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/jackson-core-asl-1.9.11-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/google-api-java-client/libs-sources/google-http-client-protobuf-1.24.1-sources.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
