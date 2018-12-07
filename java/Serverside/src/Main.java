@@ -2,8 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.GeneralSecurityException;
@@ -50,6 +48,8 @@ public class Main {
 		users.add(new User("user"));
 		users.add(new User("106949242187358004744"));
 		
+		JSONParser parser = new JSONParser();
+		
 		try {
 			
 			System.out.println("socket made");
@@ -73,7 +73,7 @@ public class Main {
 				jsonObject = reader.readLine();
 			
 				System.out.println(jsonObject);
-			JSONParser parser = new JSONParser();
+			
 			try {
 				JSONObject json = (JSONObject) parser.parse(jsonObject);
 				
