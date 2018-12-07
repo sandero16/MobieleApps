@@ -29,7 +29,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// https://www.codejava.net/java-se/networking/java-socket-server-examples-tcp-ip
-		
+		//test sander
 		CLIENT_ID = "693179558720-r2i61d5b3ps30brbclr8vn88027foneu.apps.googleusercontent.com";
 		
 		//init verifier
