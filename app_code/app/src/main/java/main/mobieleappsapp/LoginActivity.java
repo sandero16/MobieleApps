@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             idToken = account.getIdToken();
+
             // Signed in successfully, show authenticated UI.
             goToNextScreen(account);
         } catch (ApiException e) {
