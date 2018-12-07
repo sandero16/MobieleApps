@@ -6,20 +6,42 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+
 public class Main {
 	
 	static ArrayList <User> users = new ArrayList<>();
+	private static String CLIENT_ID;
 
 	public static void main(String[] args) {
 		// https://www.codejava.net/java-se/networking/java-socket-server-examples-tcp-ip
 		
+		CLIENT_ID = "693179558720-r2i61d5b3ps30brbclr8vn88027foneu.apps.googleusercontent.com";
 		
+		//init verifier
+		JsonFactory jsonFactory=new JacksonFactory();
+		HttpTransport transport=new NetHttpTransport();
+		
+		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+			    // Specify the CLIENT_ID of the app that accesses the backend:
+			    .setAudience(Collections.singletonList(CLIENT_ID))
+			    // Or, if multiple clients access the backend:
+			    //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
+			    .build();
 		
 		//add stuff to create users
 		
@@ -57,29 +79,42 @@ public class Main {
 				
 				
 				
-				String name= (String)json.get("extra");
-				System.out.println(name+ " tries to log in");
+				String token= (String)json.get("message");
+				System.out.println("token : " + token);
 				
-				//find user
-				int i=0;
-				boolean found = false;
-				while(!found && i < users.size()) {
+				//get userid from token
+				
+
+					// (Receive idTokenString by HTTPS POST)
+
+					GoogleIdToken idToken = verifier.verify(token);
+					if (idToken != null) {
+					  Payload payload = idToken.getPayload();
+
+					  // Print user identifier
+					  String user = payload.getSubject();
+					  System.out.println("User ID: " + user);
+				
+						//find user
+						int i=0;
+						boolean found = false;
+						while(!found && i < users.size()) {
+							
+							User u = users.get(i);
+							System.out.println(user +"|"+u.getName());
+							if (u.getName().equals(user)) {
+								
+								//pass the socket + run in seperate thread
+								u.setSocket(socket);
+								
+								Thread t = new Thread(u);
+								t.start();
+								
+							}
+							i++;
 					
-					User u = users.get(i);
-					System.out.println(name +"|"+u.getName());
-					if (u.getName().equals(name)) {
-						
-						//pass the socket + run in seperate thread
-						u.setSocket(socket);
-						
-						Thread t = new Thread(u);
-						t.start();
-						
-					}
-					i++;
-					
-				}
-			} catch (ParseException e) {
+				}}
+			} catch (ParseException | GeneralSecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

@@ -96,7 +96,7 @@ public class SendMessageService extends Service {
 
                 obj.put("type", new Integer(0));
                 obj.put("message", MainActivity.token);
-                obj.put("extra", name);
+                obj.put("extra", "");
 
                 writer.println(obj.toString());
 
@@ -151,9 +151,7 @@ public class SendMessageService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-
-        //String name=intent.getStringExtra("name");
-        name = "user3";
+        
 
         loginTask = new LoginTask().execute();
 
