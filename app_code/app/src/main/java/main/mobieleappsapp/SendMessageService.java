@@ -151,7 +151,7 @@ public class SendMessageService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        
+
 
         loginTask = new LoginTask().execute();
 
@@ -169,7 +169,7 @@ public class SendMessageService extends Service {
 
     public void sendMessage(String message) {
 
-            //send
+        //send
         AsyncTask<String, Void, Void> sendMessageTask = new SendMessageTask().execute(message);
 
 

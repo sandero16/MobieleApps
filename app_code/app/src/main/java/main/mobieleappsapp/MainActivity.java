@@ -1,34 +1,35 @@
+
 package main.mobieleappsapp;
 
-import android.Manifest;
-import android.arch.persistence.room.Room;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.AsyncTask;
-import android.os.IBinder;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
+        import android.Manifest;
+        import android.arch.persistence.room.Room;
+        import android.content.BroadcastReceiver;
+        import android.content.ComponentName;
+        import android.content.Context;
+        import android.content.Intent;
+        import android.content.IntentFilter;
+        import android.content.ServiceConnection;
+        import android.content.pm.PackageManager;
+        import android.location.Location;
+        import android.location.LocationListener;
+        import android.location.LocationManager;
+        import android.os.AsyncTask;
+        import android.os.IBinder;
+        import android.support.v4.app.ActivityCompat;
+        import android.support.v7.app.AppCompatActivity;
+        import android.os.Bundle;
+        import android.util.Log;
+        import android.view.View;
+        import android.widget.ArrayAdapter;
+        import android.widget.Button;
+        import android.widget.EditText;
+        import android.widget.ListView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+        import org.json.JSONException;
+        import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+        import java.util.ArrayList;
+        import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -162,6 +163,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button postButton = findViewById(R.id.post_button);
         findViewById(R.id.post_button).setOnClickListener(this);
 
+        Button mapsButton = findViewById(R.id.map_button);
+        mapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+            }
+        });
+
+
         lv = (ListView) findViewById(R.id.listview);
 
 
@@ -223,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         messageDatabase = Room.databaseBuilder(getApplicationContext(),
                 MessageDatabase.class, DATABASE_NAME)
                 .build();
-        
+
         //get all items from database
 
         AsyncTask<Void, Void, Void> execute = new GetAllDb().execute();
@@ -285,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     message.put("message", value);
                     message.put("extra", loc);
 
-                //send message
+                    //send message
 
                     mService.sendMessage(message.toString());
 
