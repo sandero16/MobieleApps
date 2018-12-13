@@ -3,18 +3,20 @@ import static java.lang.Math.toIntExact;
 
 public class SimpleMessage {
 
-	int type;
+
 	/* 0 --> login/logout
 	 * 1 --> add message to conversation
 	 */
-	
+    int type;
+    String extra;
 	String message;
+	String user;
 	@Override
 	public String toString() {
 		return "SimpleMessage [type=" + type + ", message=" + message + ", extra=" + extra + "]";
 	}
 
-	String extra;
+
 	
 	public SimpleMessage(int type, String message, String extra) {
 		
@@ -30,6 +32,7 @@ public class SimpleMessage {
 		type = toIntExact((Long) jo.get("type"));
 		message = (String) jo.get("message");
 		extra = (String) jo.get("extra");
+		user=(String) jo.get("user");
 		
 	}
 
@@ -57,6 +60,7 @@ public class SimpleMessage {
 	      obj.put("type", new Integer(type));
 	      obj.put("message", message);
 	      obj.put("extra", extra);
+	      obj.put("user", user);
 	      
 	      return obj;
 		

@@ -100,6 +100,7 @@ public class User implements Runnable {
 				
 					
 					jsonObject = reader.readLine();
+				System.out.println(jsonObject);
 				
 				
 				System.out.println(name + " object read");

@@ -38,7 +38,7 @@ public class SendMessagesToUser implements Runnable{
 			SimpleMessage sm;
 			try {
 			sm = user.getMessageToSend();
-			
+			System.out.println("sm:"+sm.toString());
 			System.out.println(user.name + " --- message received");
 			writer.println(sm.toJSON().toJSONString());
 			
